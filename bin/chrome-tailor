@@ -1,0 +1,22 @@
+#!/usr/bin/env node
+
+var path = require("path");
+var program = require("commander");
+var VERSION = require("../package.json").version;
+var xpi = require("../lib/xpi").xpi;
+var cwd = process.cwd();
+
+program
+  .version(VERSION)
+  .option("-v, --verbose", "More verbose logging to stdout.");
+
+program
+  .command("xpi")
+  .description("")
+  .action(function () {
+    xpi({
+      cwd: process.cwd()
+    });
+  });
+
+program.parse(process.argv);
