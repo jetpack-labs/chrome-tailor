@@ -1,7 +1,7 @@
 {
   "name": "chrome-tailor",
   "version": "0.0.1",
-  "description": "",
+  "description": "Creates Firefox extensions from Google Chrome extensions.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
