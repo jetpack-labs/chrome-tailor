@@ -9,6 +9,14 @@
   "bin": {
     "chrome-tailor": "./bin/chrome-tailor"
   },
+  "homepage": "https://github.com/erikvold/chrome-tailor",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/erikvold/chrome-tailor.git"
+  },
+  "bugs": {
+    "url": "http://github.com/erikvold/chrome-tailor/issues"
+  },
   "keywords": [
     "firefox",
     "chrome"
