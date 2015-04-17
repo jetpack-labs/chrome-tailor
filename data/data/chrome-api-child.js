@@ -7,11 +7,8 @@
 
 var chrome = createObjectIn(unsafeWindow, { defineAs: "chrome" });
 var tabs = createObjectIn(chrome, { defineAs: "tabs" });
+var extension = createObjectIn(chrome, { defineAs: "extension" });
 var id = 0;
-
-var chrome = {
-  tabs: {}
-};
 
 function tabsQuery(options, callback) {
   var queryID = id++;
@@ -82,6 +79,30 @@ function tabsGetCurrent(callback) {
   });
 }
 exportFunction(tabsGetCurrent, tabs, { defineAs: "getCurrent" });
+
+function tabsCreate(options, callback) {
+  var queryID = id++;
+
+  self.port.on("tabs:created", function waitForTab(data) {
+    if (data.id == queryID) {
+      self.port.removeListener("tabs:created", waitForTab);
+      callback && callback(cleanse(data.tab));
+    }
+    return null;
+  });
+
+  self.port.emit("tabs:create", {
+    id: queryID,
+    options: options
+  });
+}
+exportFunction(tabsCreate, tabs, { defineAs: "create" });
+
+function extGetURL(path) {
+  path = path.replace(/^\\/, "");
+  return self.options.rootURI + path;
+}
+exportFunction(extGetURL, extension, { defineAs: "getURL" });
 
 function cleanse(obj) {
   return unsafeWindow.JSON.parse(JSON.stringify(obj));

@@ -72,5 +72,24 @@ function setup(options) {
       }
     })
   });
+
+  target.port.on("tabs:create", function(data) {
+    var url = data.options.url;
+
+    tabs.open({
+      url: url,
+      onLoad: tab => {
+        target.port.emit("tabs:created", {
+          id: data.id,
+          tab: {
+            url: url,
+            title: tab.title,
+            // TODO: implement this!
+            favIconUrl: undefined
+          }
+        });
+      }
+    });
+  });
 }
 exports.setup = setup;
