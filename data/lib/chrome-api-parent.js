@@ -3,11 +3,13 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 "use strict";
 
+const { Ci } = require("chrome");
 const tabs = require("sdk/tabs");
 const { newURI } = require("sdk/url/utils");
 
 const { PlacesUtils: {
-  history: hstsrv
+  history: hstsrv,
+  asyncHistory
 } } = require("resource://gre/modules/PlacesUtils.jsm");
 
 function setup(options) {
@@ -104,6 +106,25 @@ function setup(options) {
     hstsrv.removePage(newURI(url));
     target.port.emit("history:deleted:url", {
       id: data.id
+    });
+  });
+
+  target.port.on("history:add:url", function(data) {
+    let url = data.url;
+    let now = Date.now() * 1000;
+    let transitionLink = Ci.nsINavHistoryService.TRANSITION_LINK;
+
+    asyncHistory.updatePlaces({
+      uri: newURI(url),
+      visits: [{visitDate: now, transitionType: transitionLink}]
+    }, {
+      handleError: () => {},
+      handleResult: () => {},
+      handleCompletion: () => {
+        target.port.emit("history:added:url", {
+          id: data.id
+        });
+      }
     });
   });
 }

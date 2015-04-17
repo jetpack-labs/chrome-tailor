@@ -153,6 +153,24 @@ function historyDeleteURL(options, callback) {
 }
 exportFunction(historyDeleteURL, history, { defineAs: "deleteUrl" });
 
+function historyAddURL(options, callback) {
+  var queryID = id++;
+
+  self.port.on("history:added:url", function wait(data) {
+    if (data.id == queryID) {
+      self.port.removeListener("history:added:url", wait);
+      callback && callback();
+    }
+    return null;
+  });
+
+  self.port.emit("history:add:url", {
+    id: queryID,
+    url: options.url
+  });
+}
+exportFunction(historyAddURL, history, { defineAs: "addUrl" });
+
 // END: chrome.history.*
 
 function cleanse(obj) {
