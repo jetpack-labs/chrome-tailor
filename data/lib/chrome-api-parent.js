@@ -6,6 +6,7 @@
 const { Ci } = require("chrome");
 const tabs = require("sdk/tabs");
 const { newURI } = require("sdk/url/utils");
+const { search } = require("sdk/places/history");
 
 const { PlacesUtils: {
   history: hstsrv,
@@ -132,6 +133,19 @@ function setup(options) {
           id: data.id
         });
       }
+    });
+  });
+
+  target.port.on("history:get:topsites", function(data) {
+    search({}, {
+      count: 8,
+      sort: "visitCount",
+      descending: true
+    }).on("end", function (results) {
+      target.port.emit("history:got:topsites", {
+        id: data.id,
+        urls: results
+      });
     });
   });
 }

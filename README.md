@@ -29,5 +29,6 @@ Creates Firefox extensions from Google Chrome extensions.
 * chrome.tabs.getCurrent
 * chrome.tabs.query
 * chrome.tabs.remove
+* chrome.topSites.get
 
 [GCAPIs]:https://developer.chrome.com/extensions/api_index

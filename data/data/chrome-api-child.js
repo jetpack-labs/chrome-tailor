@@ -9,6 +9,7 @@ var chrome = createObjectIn(unsafeWindow, { defineAs: "chrome" });
 var tabs = createObjectIn(chrome, { defineAs: "tabs" });
 var extension = createObjectIn(chrome, { defineAs: "extension" });
 var history = createObjectIn(chrome, { defineAs: "history" });
+var topSites = createObjectIn(chrome, { defineAs: "topSites" });
 var id = 0;
 
 
@@ -189,6 +190,29 @@ function historyAddURL(options, callback) {
 exportFunction(historyAddURL, history, { defineAs: "addUrl" });
 
 // END: chrome.history.*
+
+
+// START: chrome.topSites.*
+
+function getTopSites(callback) {
+  var queryID = id++;
+
+  self.port.on("history:got:topsites", function wait(data) {
+    if (data.id == queryID) {
+      self.port.removeListener("history:got:topsites", wait);
+      callback && callback(cleanse(data.urls));
+    }
+    return null;
+  });
+
+  self.port.emit("history:get:topsites", {
+    id: queryID
+  });
+}
+exportFunction(getTopSites, topSites, { defineAs: "get" });
+
+
+// END: chrome.topSites.*
 
 function cleanse(obj) {
   return unsafeWindow.JSON.parse(JSON.stringify(obj));
