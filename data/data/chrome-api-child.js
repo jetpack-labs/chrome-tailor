@@ -114,6 +114,11 @@ function isAllowedFileSchemeAccess(callback) {
 }
 exportFunction(isAllowedFileSchemeAccess, extension, { defineAs: "isAllowedFileSchemeAccess" });
 
+function setUpdateUrlData(data) {
+  // do nothing..
+}
+exportFunction(setUpdateUrlData, extension, { defineAs: "setUpdateUrlData" });
+
 function cleanse(obj) {
   return unsafeWindow.JSON.parse(JSON.stringify(obj));
 }
