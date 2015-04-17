@@ -104,6 +104,11 @@ function extGetURL(path) {
 }
 exportFunction(extGetURL, extension, { defineAs: "getURL" });
 
+function isAllowedIncognitoAccess(callback) {
+  callback(false);
+}
+exportFunction(isAllowedIncognitoAccess, extension, { defineAs: "isAllowedIncognitoAccess" });
+
 function cleanse(obj) {
   return unsafeWindow.JSON.parse(JSON.stringify(obj));
 }
