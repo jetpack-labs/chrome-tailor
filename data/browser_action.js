@@ -8,6 +8,7 @@ const { ActionButton } = require("sdk/ui/button/action");
 const { Panel } = require("sdk/panel");
 const { setTimeout } = require("sdk/timers");
 const { emit, on, off } = require('sdk/event/core');
+const { getURL } = require("./crx");
 
 const { setup, emitter } = require("./lib/chrome-api-parent");
 
@@ -46,7 +47,3 @@ function create(options) {
   return button;
 }
 exports.create = create;
-
-function getURL(path) {
-  return self.data.url("./crx/" + path);
-}

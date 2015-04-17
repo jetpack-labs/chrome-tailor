@@ -5,6 +5,7 @@
 
 const self = require("sdk/self");
 const pageWorker = require("sdk/page-worker");
+const { getURL } = require("./crx");
 
 const setupChromeAPI = require("./lib/chrome-api-parent").setup;
 
@@ -28,7 +29,3 @@ function create(options) {
   return backgroundPage;
 }
 exports.create = create;
-
-function getURL(path) {
-  return self.data.url("./crx/" + path);
-}
