@@ -7,14 +7,29 @@
 
 var chrome = createObjectIn(unsafeWindow, { defineAs: "chrome" });
 var tabs = createObjectIn(chrome, { defineAs: "tabs" });
+var id = 0;
 
 var chrome = {
   tabs: {}
 };
 
 function tabsQuery(options, callback) {
-  callback(unsafeWindow.JSON.parse(JSON.stringify([{
-    url: "about:home"
-  }])));
+  var queryID = id++;
+
+  self.port.on("tabs:query:result", function tabsResults(data) {
+    if (data.id == queryID) {
+      self.port.removeListener("tabs:query:result", tabsResults);
+      callback(cleanse(data.tabs));
+    }
+    return null;
+  });
+
+  self.port.emit("tabs:query", {
+    id: queryID
+  });
 }
 exportFunction(tabsQuery, tabs, { defineAs: "query" });
+
+function cleanse(obj) {
+  return unsafeWindow.JSON.parse(JSON.stringify(obj));
+}

@@ -5,35 +5,14 @@
 
 const self = require("sdk/self");
 const pageWorker = require("sdk/page-worker");
-const { ActionButton } = require("sdk/ui/button/action");
-const { Panel } = require("sdk/panel");
-
 // the chrome extension data is in data/crx
 const manifest = require("./data/crx/manifest.json");
 
+const browserAction = require("./browser_action");
+
 if (manifest.browser_action) {
-  let icon = manifest.browser_action.default_icon || "";
-  let label = manifest.browser_action.default_title || "blank";
-  let url = manifest.browser_action.default_popup || "";
-
-  let button = ActionButton({
-    id: "my-button",
-    label: label,
-    icon: getURL(icon),
-    onClick: function(state) {
-      panel.show({
-        position: button
-      });
-    }
-  });
-  console.log("Created Button!")
-
-  let panel = Panel({
-    contentURL: getURL(url),
-    contentScriptWhen: "start",
-    contentScriptFile: self.data.url("chrome-api.js")
-  });
-  console.log("Created Panel!")
+  browserAction.create(manifest.browser_action);
+  console.log("Created browser_action!");
 }
 
 /*
