@@ -4,6 +4,11 @@
 "use strict";
 
 const tabs = require("sdk/tabs");
+const { newURI } = require("sdk/url/utils");
+
+const { PlacesUtils: {
+  history: hstsrv
+} } = require("resource://gre/modules/PlacesUtils.jsm");
 
 function setup(options) {
   var target = options.target;
@@ -68,7 +73,8 @@ function setup(options) {
     target.port.emit("tabs:got:current", {
       id: data.id,
       tab: {
-        id: i
+        id: i,
+        url: activeTab.url
       }
     })
   });
@@ -89,6 +95,15 @@ function setup(options) {
           }
         });
       }
+    });
+  });
+
+  target.port.on("history:delete:url", function(data) {
+    var url = data.url;
+
+    hstsrv.removePage(newURI(url));
+    target.port.emit("history:deleted:url", {
+      id: data.id
     });
   });
 }
