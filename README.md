@@ -12,4 +12,22 @@ Creates Firefox extensions from Google Chrome extensions.
 ### Commands
 
 * `chrome-tailor run` Runs the current add-on on Firefox.
-* `chrome-tailor xpi` Zips up the current add-on into a `.xpi` file.
+* `chrome-tailor xpi` Creates a `.xpi` file.
+
+## Currently implemented [Google Chrome APIs][GCAPIs]
+
+* chrome.extension.getURL
+* chrome.extension.inIncognitoContext
+* chrome.extension.isAllowedIncognitoAccess
+* chrome.extension.isAllowedFileSchemeAccess
+* chrome.extension.setUpdateUrlData
+* chrome.history.addUrl
+* chrome.history.deleteAll
+* chrome.history.deleteUrl
+* chrome.tabs.create
+* chrome.tabs.duplicate
+* chrome.tabs.getCurrent
+* chrome.tabs.query
+* chrome.tabs.remove
+
+[GCAPIs]:https://developer.chrome.com/extensions/api_index
