@@ -19,7 +19,7 @@ function tabsQuery(options, callback) {
   self.port.on("tabs:query:result", function tabsResults(data) {
     if (data.id == queryID) {
       self.port.removeListener("tabs:query:result", tabsResults);
-      callback(cleanse(data.tabs));
+      callback && callback(cleanse(data.tabs));
     }
     return null;
   });
@@ -47,6 +47,24 @@ function tabsRemove(tabIds, callback) {
   });
 }
 exportFunction(tabsRemove, tabs, { defineAs: "remove" });
+
+function tabDuplicate(tabId, callback) {
+  var queryID = id++;
+
+  self.port.on("tabs:duplicated", function tabDuplicated(data) {
+    if (data.id == queryID) {
+      self.port.removeListener("tabs:duplicated", tabDuplicated);
+      callback && callback(data.tab);
+    }
+    return null;
+  });
+
+  self.port.emit("tabs:duplicate", {
+    id: queryID,
+    tabId: tabId
+  });
+}
+exportFunction(tabDuplicate, tabs, { defineAs: "duplicate" });
 
 function cleanse(obj) {
   return unsafeWindow.JSON.parse(JSON.stringify(obj));

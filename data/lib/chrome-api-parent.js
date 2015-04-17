@@ -8,6 +8,27 @@ const tabs = require("sdk/tabs");
 function setup(options) {
   var target = options.target;
 
+  target.port.on("tabs:duplicate", function(data) {
+    var tabID = data.tabId;
+    var id = data.id;
+    var url = tabs[tabID].url;
+
+    tabs.open({
+      url: url,
+      onLoad: tab => {
+        target.port.emit("tabs:duplicated", {
+          id: id,
+          tab: {
+            url: url,
+            title: tab.title,
+            // TODO: implement this!
+            favIconUrl: undefined
+          }
+        });
+      }
+    });
+  });
+
   target.port.on("tabs:remove", function(data) {
     var tabIDs = (Array.isArray(data.tabs) ? data.tabs : [ data.tabs ]).sort();
     var id = data.id;
