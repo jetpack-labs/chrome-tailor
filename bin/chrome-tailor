@@ -4,10 +4,12 @@ var path = require("path");
 var program = require("commander");
 var VERSION = require("../package.json").version;
 var xpi = require("../lib/xpi").xpi;
+var run = require("../lib/run").run;
 var cwd = process.cwd();
 
 program
   .version(VERSION)
+  .option("-b, --binary <path>", "Path of Firefox binary to use.")
   .option("-v, --verbose", "More verbose logging to stdout.");
 
 program
@@ -15,7 +17,20 @@ program
   .description("")
   .action(function () {
     xpi({
-      cwd: process.cwd()
+      cwd: process.cwd(),
+      verbose: program.verbose
+    });
+  });
+
+
+program
+  .command("run")
+  .description("Install and run in Firefox the current addon")
+  .action(function () {
+    run({
+      binary: program.binary,
+      cwd: process.cwd(),
+      verbose: program.verbose
     });
   });
 
