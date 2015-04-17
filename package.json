@@ -9,13 +9,13 @@
   "bin": {
     "chrome-tailor": "./bin/chrome-tailor"
   },
-  "homepage": "https://github.com/erikvold/chrome-tailor",
+  "homepage": "https://github.com/jetpack-labs/chrome-tailor",
   "repository": {
     "type": "git",
-    "url": "git://github.com/erikvold/chrome-tailor.git"
+    "url": "git://github.com/jetpack-labs/chrome-tailor.git"
   },
   "bugs": {
-    "url": "http://github.com/erikvold/chrome-tailor/issues"
+    "url": "http://github.com/jetpack-labs/chrome-tailor/issues"
   },
   "keywords": [
     "firefox",
