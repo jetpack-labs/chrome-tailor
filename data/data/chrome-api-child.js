@@ -109,6 +109,11 @@ function isAllowedIncognitoAccess(callback) {
 }
 exportFunction(isAllowedIncognitoAccess, extension, { defineAs: "isAllowedIncognitoAccess" });
 
+function isAllowedFileSchemeAccess(callback) {
+  callback(false);
+}
+exportFunction(isAllowedFileSchemeAccess, extension, { defineAs: "isAllowedFileSchemeAccess" });
+
 function cleanse(obj) {
   return unsafeWindow.JSON.parse(JSON.stringify(obj));
 }
