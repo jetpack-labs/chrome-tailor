@@ -153,6 +153,23 @@ function historyDeleteURL(options, callback) {
 }
 exportFunction(historyDeleteURL, history, { defineAs: "deleteUrl" });
 
+function historyDeleteAll(callback) {
+  var queryID = id++;
+
+  self.port.on("history:deleted:all", function wait(data) {
+    if (data.id == queryID) {
+      self.port.removeListener("history:deleted:all", wait);
+      callback && callback();
+    }
+    return null;
+  });
+
+  self.port.emit("history:delete:all", {
+    id: queryID
+  });
+}
+exportFunction(historyDeleteAll, history, { defineAs: "deleteAll" });
+
 function historyAddURL(options, callback) {
   var queryID = id++;
 

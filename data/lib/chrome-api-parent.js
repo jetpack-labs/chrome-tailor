@@ -109,6 +109,13 @@ function setup(options) {
     });
   });
 
+  target.port.on("history:delete:all", function(data) {
+    hstsrv.removeAllPages();
+    target.port.emit("history:deleted:all", {
+      id: data.id
+    });
+  });
+
   target.port.on("history:add:url", function(data) {
     let url = data.url;
     let now = Date.now() * 1000;
