@@ -10,6 +10,10 @@ var tabs = createObjectIn(chrome, { defineAs: "tabs" });
 var extension = createObjectIn(chrome, { defineAs: "extension" });
 var history = createObjectIn(chrome, { defineAs: "history" });
 var topSites = createObjectIn(chrome, { defineAs: "topSites" });
+
+var browserAction = createObjectIn(chrome, { defineAs: "browserAction" });
+var onClicked = createObjectIn(browserAction, { defineAs: "onClicked" });
+
 var id = 0;
 
 
@@ -71,9 +75,9 @@ exportFunction(tabDuplicate, tabs, { defineAs: "duplicate" });
 function tabsGetCurrent(callback) {
   var queryID = id++;
 
-  self.port.on("tabs:got:current", function waitForTab(data) {
+  self.port.on("tabs:got:current", function wait(data) {
     if (data.id == queryID) {
-      self.port.removeListener("tabs:got:current", waitForTab);
+      self.port.removeListener("tabs:got:current", wait);
       callback && callback(cleanse(data.tab));
     }
     return null;
@@ -88,9 +92,9 @@ exportFunction(tabsGetCurrent, tabs, { defineAs: "getCurrent" });
 function tabsCreate(options, callback) {
   var queryID = id++;
 
-  self.port.on("tabs:created", function waitForTab(data) {
+  self.port.on("tabs:created", function wait(data) {
     if (data.id == queryID) {
-      self.port.removeListener("tabs:created", waitForTab);
+      self.port.removeListener("tabs:created", wait);
       callback && callback(cleanse(data.tab));
     }
     return null;
@@ -102,6 +106,33 @@ function tabsCreate(options, callback) {
   });
 }
 exportFunction(tabsCreate, tabs, { defineAs: "create" });
+
+function tabsExecuteScript(tabId, details, callback) {
+  var queryID = id++;
+  // tabId is optional
+  if (typeof tabId == "object") {
+    let newDetails = tabId;
+    callback = details;
+    details = newDetails;
+    tabId = undefined;
+  }
+
+  self.port.on("tabs:executed:script", function wait(data) {
+    if (data.id == queryID) {
+      self.port.removeListener("tabs:executed:script", wait);
+      // TODO: implement results
+      callback && callback();
+    }
+    return null;
+  });
+
+  self.port.emit("tabs:execute:script", {
+    id: queryID,
+    tabId: tabId,
+    details: details
+  });
+}
+exportFunction(tabsExecuteScript, tabs, { defineAs: "executeScript" });
 
 // END: chrome.tabs.*
 
@@ -213,6 +244,29 @@ exportFunction(getTopSites, topSites, { defineAs: "get" });
 
 
 // END: chrome.topSites.*
+
+
+// START: chrome.browserAction.*
+
+function browserActionOnClick(callback) {
+  var queryID = id++;
+
+  self.port.on("browser-action:onclicked", function wait(data) {
+    if (data.id == queryID) {
+      callback && callback(cleanse(data.tab));
+    }
+    return null;
+  });
+
+  self.port.emit("browser-action:onclick", {
+    id: queryID
+  });
+}
+exportFunction(browserActionOnClick, onClicked, { defineAs: "addListener" });
+
+
+// END: chrome.browserAction.*
+
 
 function cleanse(obj) {
   return unsafeWindow.JSON.parse(JSON.stringify(obj));

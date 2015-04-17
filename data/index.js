@@ -4,22 +4,24 @@
 "use strict";
 
 const self = require("sdk/self");
-const pageWorker = require("sdk/page-worker");
 // the chrome extension data is in data/crx
 const manifest = require("./data/crx/manifest.json");
 
+const background = require("./background");
+var backgroundPage;
+
 const browserAction = require("./browser_action");
+var browserActionBtn;
 
 if (manifest.browser_action) {
-  browserAction.create(manifest.browser_action);
+  browserActionBtn = browserAction.create(manifest.browser_action);
   console.log("Created browser_action!");
 }
 
-/*
-var backgroundPage = pageWorker.Page({
-  contentURL: getURL(url)
-})
-*/
+if (manifest.background) {
+  backgroundPage = background.create(manifest.background);
+  console.log("Created background page!");
+}
 
 function getURL(path) {
   return self.data.url("./crx/" + path);

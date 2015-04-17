@@ -16,6 +16,7 @@ Creates Firefox extensions from Google Chrome extensions.
 
 ## Currently implemented [Google Chrome APIs][GCAPIs]
 
+* chrome.browserAction.onClick.addListener
 * chrome.extension.getURL
 * chrome.extension.inIncognitoContext
 * chrome.extension.isAllowedIncognitoAccess
@@ -26,6 +27,7 @@ Creates Firefox extensions from Google Chrome extensions.
 * chrome.history.deleteUrl
 * chrome.tabs.create
 * chrome.tabs.duplicate
+* chrome.tabs.executeScript
 * chrome.tabs.getCurrent
 * chrome.tabs.query
 * chrome.tabs.remove

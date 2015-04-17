@@ -7,9 +7,9 @@ const self = require("sdk/self");
 const { ActionButton } = require("sdk/ui/button/action");
 const { Panel } = require("sdk/panel");
 const { setTimeout } = require("sdk/timers");
-const notifications = require("sdk/notifications");
+const { emit, on, off } = require('sdk/event/core');
 
-const setupChromeAPI = require("./lib/chrome-api-parent").setup;
+const { setup, emitter } = require("./lib/chrome-api-parent");
 
 function create(options) {
   let icon = options.default_icon || "";
@@ -21,25 +21,29 @@ function create(options) {
     label: label,
     icon: getURL(icon),
     onClick: function(state) {
-      let panel = Panel({
-        contentURL: getURL(url),
-        contentScriptWhen: "start",
-        contentScriptFile: self.data.url("chrome-api-child.js"),
-        contentScriptOptions: {
-          rootURI: getURL("")
-        },
-        onHide: () => setTimeout(() => panel.destroy(), 500)
-      });
+      if (url) {
+        let panel = Panel({
+          contentURL: getURL(url),
+          contentScriptWhen: "start",
+          contentScriptFile: self.data.url("chrome-api-child.js"),
+          contentScriptOptions: {
+            rootURI: getURL("")
+          },
+          onHide: () => setTimeout(() => panel.destroy(), 500)
+        });
 
-      setupChromeAPI({ target: panel });
+        setup({ target: panel });
 
-      panel.show({
-        position: button
-      });
+        panel.show({
+          position: button
+        });
+      }
+
+      emit(emitter, "browser-action:onclicked");
     }
   });
 
-  return null;
+  return button;
 }
 exports.create = create;
 

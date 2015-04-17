@@ -5,13 +5,19 @@
 
 const { Ci } = require("chrome");
 const tabs = require("sdk/tabs");
+const self = require("sdk/self");
 const { newURI } = require("sdk/url/utils");
 const { search } = require("sdk/places/history");
+const { events } = require('sdk/places/events');
+const { EventTarget } = require("sdk/event/target");
+const { emit, on, off } = require('sdk/event/core');
 
 const { PlacesUtils: {
   history: hstsrv,
   asyncHistory
 } } = require("resource://gre/modules/PlacesUtils.jsm");
+
+const emitter = EventTarget();
 
 function setup(options) {
   var target = options.target;
@@ -101,6 +107,35 @@ function setup(options) {
     });
   });
 
+  target.port.on("tabs:execute:script", function(data) {
+    let tab = (!data.tabId) ? tabs.activeTab : tabs[tabId];
+    let runAt = data.details.runAt ? data.details.runAt.replace(/^document_/i, "") : "ready";
+    if (runAt == "idle") {
+      runAt = "ready";
+    }
+
+    if (data.details.code) {
+      tab.attach({
+        contentScriptWhen: runAt,
+        contentScript: data.details.code,
+        onAttach: function() {
+          target.port.emit("tabs:executed:script", {
+            id: data.id
+          });
+        }
+      });
+    }
+    else {
+      tab.attach({
+        contentScriptWhen: runAt,
+        contentScriptFile: getURL(data.details.file),
+        onAttach: function() {
+          target.port.emit("tabs:executed:script");
+        }
+      });
+    }
+  });
+
   target.port.on("history:delete:url", function(data) {
     var url = data.url;
 
@@ -148,5 +183,24 @@ function setup(options) {
       });
     });
   });
+
+  target.port.on("browser-action:onclick", function(data) {
+    on(emitter, "browser-action:onclicked", function() {
+      let tab = tabs.activeTab;
+      target.port.emit("browser-action:onclicked", {
+        id: data.id,
+        tab: {
+          url: tab.url,
+          title: tab.title
+        }
+      });
+    });
+  });
 }
 exports.setup = setup;
+
+exports.emitter = emitter;
+
+function getURL(path) {
+  return self.data.url("./crx/" + path);
+}
