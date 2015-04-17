@@ -66,6 +66,23 @@ function tabDuplicate(tabId, callback) {
 }
 exportFunction(tabDuplicate, tabs, { defineAs: "duplicate" });
 
+function tabsGetCurrent(callback) {
+  var queryID = id++;
+
+  self.port.on("tabs:got:current", function waitForTab(data) {
+    if (data.id == queryID) {
+      self.port.removeListener("tabs:got:current", waitForTab);
+      callback && callback(cleanse(data.tab));
+    }
+    return null;
+  });
+
+  self.port.emit("tabs:get:current", {
+    id: queryID
+  });
+}
+exportFunction(tabsGetCurrent, tabs, { defineAs: "getCurrent" });
+
 function cleanse(obj) {
   return unsafeWindow.JSON.parse(JSON.stringify(obj));
 }

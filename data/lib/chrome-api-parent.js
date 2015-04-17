@@ -54,5 +54,23 @@ function setup(options) {
       tabs: result
     })
   });
+
+  target.port.on("tabs:get:current", function(data) {
+    var i = 0;
+    var activeTab = tabs.activeTab;
+    for (let tab of tabs) {
+      if (tab === activeTab) {
+        break;
+      }
+      i++;
+    }
+
+    target.port.emit("tabs:got:current", {
+      id: data.id,
+      tab: {
+        id: i
+      }
+    })
+  });
 }
 exports.setup = setup;
