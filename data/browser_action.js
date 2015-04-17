@@ -7,8 +7,9 @@ const self = require("sdk/self");
 const { ActionButton } = require("sdk/ui/button/action");
 const { Panel } = require("sdk/panel");
 const { setTimeout } = require("sdk/timers");
-const tabs = require("sdk/tabs");
 const notifications = require("sdk/notifications");
+
+const setupChromeAPI = require("./lib/chrome-api-parent").setup;
 
 function create(options) {
   let icon = options.default_icon || "";
@@ -23,35 +24,12 @@ function create(options) {
       let panel = Panel({
         contentURL: getURL(url),
         contentScriptWhen: "start",
-        contentScriptFile: self.data.url("chrome-api.js"),
+        contentScriptFile: self.data.url("chrome-api-child.js"),
         onHide: () => setTimeout(() => panel.destroy(), 500)
       });
 
-      panel.port.on("tabs:remove", function(data) {
-        var tabIDs = (Array.isArray(data.tabs) ? data.tabs : [ data.tabs ]).sort();
-        var id = data.id;
-        for (let i = tabIDs.length - 1, tabID; i >= 0; i--) {
-          let tab = tabs[tabIDs[i]];
-          tab.close();
-        }
+      setupChromeAPI({ target: panel });
 
-        panel.port.emit("tabs:removed", {
-          id: id
-        });
-      });
-
-      panel.port.on("tabs:query", function(data) {
-        var result = [];
-        for (let tab of tabs) {
-          result.push({
-            url: tab.url
-          });
-        }
-        panel.port.emit("tabs:query:result", {
-          id: data.id,
-          tabs: result
-        })
-      });
       panel.show({
         position: button
       });
