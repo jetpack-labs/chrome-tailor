@@ -119,6 +119,8 @@ function setUpdateUrlData(data) {
 }
 exportFunction(setUpdateUrlData, extension, { defineAs: "setUpdateUrlData" });
 
+extension.inIncognitoContext = false;
+
 function cleanse(obj) {
   return unsafeWindow.JSON.parse(JSON.stringify(obj));
 }
