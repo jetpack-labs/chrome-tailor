@@ -30,6 +30,24 @@ function tabsQuery(options, callback) {
 }
 exportFunction(tabsQuery, tabs, { defineAs: "query" });
 
+function tabsRemove(tabIds, callback) {
+  var queryID = id++;
+
+  self.port.on("tabs:removed", function tabsRemoved(data) {
+    if (data.id == queryID) {
+      self.port.removeListener("tabs:removed", tabsRemoved);
+      callback && callback();
+    }
+    return null;
+  });
+
+  self.port.emit("tabs:remove", {
+    id: queryID,
+    tabs: tabIds
+  });
+}
+exportFunction(tabsRemove, tabs, { defineAs: "remove" });
+
 function cleanse(obj) {
   return unsafeWindow.JSON.parse(JSON.stringify(obj));
 }
