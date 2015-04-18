@@ -19,12 +19,17 @@
   },
   "keywords": [
     "firefox",
-    "chrome"
+    "chrome",
+    "google",
+    "mozilla",
+    "extensions",
+    "add-ons"
   ],
   "author": "Erik Vold",
   "license": "MPL 2",
   "dependencies": {
     "bluebird": "2.9.24",
+    "chrome-tailor-jetpack": "0.0.1",
     "commander": "2.6.0",
     "dive": "0.4.0",
     "fs-extra": "0.16.4",
