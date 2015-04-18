@@ -1,6 +1,6 @@
 {
   "name": "chrome-tailor",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Creates Firefox extensions from Google Chrome extensions.",
   "main": "index.js",
   "scripts": {
