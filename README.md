@@ -12,6 +12,7 @@ Creates Firefox extensions from Google Chrome extensions.
 ### Commands
 
 * `chrome-tailor run` Runs the current add-on on Firefox.
+* `chrome-tailor crx` Creates a `.crx` file.
 * `chrome-tailor xpi` Creates a `.xpi` file.
 
 ## Currently Implemented [Google Chrome APIs][GCAPIs]
@@ -25,12 +26,15 @@ Creates Firefox extensions from Google Chrome extensions.
 * chrome.history.addUrl
 * chrome.history.deleteAll
 * chrome.history.deleteUrl
+* chrome.runtime.onMessage.addListener
+* chrome.runtime.sendMessage
 * chrome.tabs.create
 * chrome.tabs.duplicate
 * chrome.tabs.executeScript
 * chrome.tabs.getCurrent
 * chrome.tabs.query
 * chrome.tabs.remove
+* chrome.tabs.sendMessage
 * chrome.topSites.get
 
 [GCAPIs]:https://developer.chrome.com/extensions/api_index
@@ -52,6 +56,9 @@ Creates Firefox extensions from Google Chrome extensions.
         "script": "", // or ..
         "page": ""
       },
+      "content_scripts": [
+        // ...
+      ],
       "permissions": [
         "history",
         "tabs",

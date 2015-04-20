@@ -15,7 +15,7 @@ program
 
 program
   .command("xpi")
-  .description("")
+  .description("Build a Firefox extension (which end with .xpi).")
   .action(function () {
     xpi({
       cwd: process.cwd(),
