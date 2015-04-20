@@ -1,6 +1,6 @@
 {
   "name": "chrome-tailor",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Creates Firefox extensions from Google Chrome extensions.",
   "main": "index.js",
   "scripts": {
@@ -29,7 +29,7 @@
   "license": "MPL 2",
   "dependencies": {
     "bluebird": "2.9.24",
-    "chrome-tailor-jetpack": "0.0.1",
+    "chrome-tailor-jetpack": "0.0.2",
     "commander": "2.6.0",
     "dive": "0.4.0",
     "fs-extra": "0.16.4",
