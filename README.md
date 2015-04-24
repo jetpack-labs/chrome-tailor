@@ -2,6 +2,9 @@
 
 Creates Firefox extensions from Google Chrome extensions.
 
+Note: currently only works for Firefox 38+
+
+
 ## Usage
 
 `chrome-tailor` has two commands: `run` and `xpi`, with details below. Some options are:
@@ -12,11 +15,27 @@ Creates Firefox extensions from Google Chrome extensions.
 * `-b, --binary <path>` Use the specified Firefox binary to run the add-on. Used in `run` and `test`.
 * `-v, --verbose` Prints additional debugging information.
 
+
 ### Commands
 
 * `chrome-tailor run` Runs the current add-on on Firefox.
 * `chrome-tailor crx` Creates a `.crx` file.
 * `chrome-tailor xpi` Creates a `.xpi` file.
+
+
+## Install
+
+In order to install you must first have `npm` installed.  Then to install `chrome-tailor` run this command:
+
+    npm install chrome-tailor -g
+
+
+## Usage
+
+To try a Google Chrome extension's source on Firefox Nightly, run this command:
+
+    chrome-tailor run -b nightly
+
 
 ## Currently Implemented [Google Chrome APIs][GCAPIs]
 
@@ -39,6 +58,7 @@ Creates Firefox extensions from Google Chrome extensions.
 * chrome.tabs.remove
 * chrome.tabs.sendMessage
 * chrome.topSites.get
+
 
 ## Currently Supported `manifest.json` Properties
 
@@ -69,6 +89,7 @@ Creates Firefox extensions from Google Chrome extensions.
         "newtab": ""
       }
     }
+
 
 [GCAPIs]:https://developer.chrome.com/extensions/api_index
 [chrome-tailor-jetpack]:https://github.com/jetpack-labs/chrome-tailor-jetpack
