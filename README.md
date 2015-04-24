@@ -7,6 +7,9 @@ Creates Firefox extensions from Google Chrome extensions.
 `chrome-tailor` has two commands: `run` and `xpi`, with details below. Some options are:
 
 * `-b, --binary <path>` Use the specified Firefox binary to run the add-on. Used in `run` and `test`.
+* `--jetpack <path>` **For Development** Path to [chrome tailor jetpack][chrome-tailor-jetpack].
+* `--sdk <path>` **For Development** Path to [addon-sdk][addon-sdk].
+* `-b, --binary <path>` Use the specified Firefox binary to run the add-on. Used in `run` and `test`.
 * `-v, --verbose` Prints additional debugging information.
 
 ### Commands
@@ -37,8 +40,6 @@ Creates Firefox extensions from Google Chrome extensions.
 * chrome.tabs.sendMessage
 * chrome.topSites.get
 
-[GCAPIs]:https://developer.chrome.com/extensions/api_index
-
 ## Currently Supported `manifest.json` Properties
 
     {
@@ -68,3 +69,7 @@ Creates Firefox extensions from Google Chrome extensions.
         "newtab": ""
       }
     }
+
+[GCAPIs]:https://developer.chrome.com/extensions/api_index
+[chrome-tailor-jetpack]:https://github.com/jetpack-labs/chrome-tailor-jetpack
+[addon-sdk]:https://github.com/mozilla/addon-sdk

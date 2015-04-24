@@ -11,6 +11,7 @@ program
   .version(VERSION)
   .option("-b, --binary <path>", "Path of Firefox binary to use.")
   .option("--jetpack <path>", "Path to chrome tailor jetpack.")
+  .option("--sdk <path>", "Path to addon-sdk.")
   .option("-v, --verbose", "More verbose logging to stdout.");
 
 program
@@ -32,6 +33,7 @@ program
       binary: program.binary,
       cwd: process.cwd(),
       jetpack: program.jetpack,
+      overload: program.sdk,
       verbose: program.verbose
     });
   });
