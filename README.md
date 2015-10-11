@@ -12,7 +12,6 @@ Note: currently only works for Firefox 38+
 * `-b, --binary <path>` Use the specified Firefox binary to run the add-on. Used in `run` and `test`.
 * `--jetpack <path>` **For Development** Path to [chrome tailor jetpack][chrome-tailor-jetpack].
 * `--sdk <path>` **For Development** Path to [addon-sdk][addon-sdk].
-* `-b, --binary <path>` Use the specified Firefox binary to run the add-on. Used in `run` and `test`.
 * `-v, --verbose` Prints additional debugging information.
 
 
