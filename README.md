@@ -32,7 +32,7 @@ In order to install you must first have `npm` installed.  Then to install `chrom
 
 ## Usage
 
-To try a Google Chrome extension's source on Firefox Nightly, run this command:
+To try a Google Chrome extension's source on Firefox Nightly, run this command from the same folder as the manifest.json file is:
 
     chrome-tailor run -b nightly
 
